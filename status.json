@@ -1,0 +1,13 @@
+{
+  "mode": "ok",
+  "title": "",
+  "message": "",
+  "updatedAt": "2026-07-19T00:00:00Z",
+  "source": "auto",
+  "manualHold": false,
+  "monitor": {
+    "failStreak": 0,
+    "okStreak": 0,
+    "lastCheckAt": ""
+  }
+}

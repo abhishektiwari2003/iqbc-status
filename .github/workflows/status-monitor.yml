@@ -1,0 +1,57 @@
+name: Service status monitor
+
+# Health-checks the backend and updates status.json (the out-of-band outage
+# channel the app reads from GitHub raw). Runs independently of Supabase so it
+# keeps working during a Supabase outage. A human-set maintenance (manualHold)
+# is always respected.
+#
+# Required repository secrets:
+#   SUPABASE_URL       e.g. https://xxxx.supabase.co
+#   SUPABASE_ANON_KEY  the anon key (safe to store; used only as apikey header)
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+# Prevent overlapping runs from racing on the commit.
+concurrency:
+  group: status-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run status monitor
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          OPEN_THRESHOLD: "2"
+          CLOSE_THRESHOLD: "2"
+          AUTO_MODE: "maintenance"
+          STATUS_FILE: "status.json"
+        run: node scripts/status-monitor.mjs
+
+      - name: Commit status changes
+        run: |
+          if git diff --quiet -- status.json; then
+            echo "No status change to commit."
+          else
+            git config user.name "iqbc-status-bot"
+            git config user.email "actions@github.com"
+            git add status.json
+            git commit -m "chore(status): auto update [skip ci]"
+            git push
+          fi
