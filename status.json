@@ -1,13 +1,13 @@
 {
-  "mode": "ok",
-  "title": "",
-  "message": "",
-  "updatedAt": "2026-09-11T10:25:11.664Z",
+  "mode": "maintenance",
+  "title": "We'll be right back",
+  "message": "We're experiencing a temporary service disruption and are working to restore it. Please try again shortly.",
+  "updatedAt": "2026-11-02T13:48:12.569Z",
   "source": "auto",
   "manualHold": false,
   "monitor": {
-    "failStreak": 1,
+    "failStreak": 2,
     "okStreak": 0,
-    "lastCheckAt": "2026-11-02T05:31:50.012Z"
+    "lastCheckAt": "2026-11-02T13:48:12.569Z"
   }
 }
