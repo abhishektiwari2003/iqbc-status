@@ -6,8 +6,8 @@
   "source": "auto",
   "manualHold": false,
   "monitor": {
-    "failStreak": 16,
+    "failStreak": 17,
     "okStreak": 0,
-    "lastCheckAt": "2026-11-06T08:28:54.452Z"
+    "lastCheckAt": "2026-11-06T16:11:15.937Z"
   }
 }
